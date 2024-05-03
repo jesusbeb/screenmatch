@@ -127,24 +127,36 @@ public class Principal {
 //                                "Fecha de Lanzamiento " +e.getFechaLanzamientoEpisodio().format(dtf) //usamos .format para indicar el formato en que queremos la fecha
 //                ));
 
-        //Buscar episodios por pedazo de titulo
-        //La lista de episodios la tratamos con stream()
-        //filter() e para cada episodio -> obtenemos el titulo con e.getTituloEpisodio y lo pasamos a mayusculas
-        //contains() busca en alguna parte del titulo lo que el usuario ingreso, igual convertido a mayusculas
-        //findFirst() obtiene la primera coincidencia. Y retorna un optional
-        //Optional es un contenedor donde puede o no haber un resultado. En una variable local del
-        //tipo Optional de <Episodio>, se almacena el resultado de los filtros de stream y la tratamos con if-else
-        System.out.println("Escribe el titulo completo que deseas buscar, o parte de él: ");
-        var pedazoTitulo = teclado.nextLine();
-        Optional<Episodio> episodioBuscado = episodios.stream()
-                .filter(e -> e.getTituloEpisodio().toUpperCase().contains(pedazoTitulo.toUpperCase()))
-                .findFirst();
-        if(episodioBuscado.isPresent()){
-            System.out.println("Episodio encontrado: ");
-            System.out.println("Los datos son: " +episodioBuscado.get()); //get().getTitulo() traeria solo el titulo
-        } else {
-            System.out.println("Episodio no encontrado.");
-        }
+//        //Buscar episodios por pedazo de titulo
+//        //La lista de episodios la tratamos con stream()
+//        //filter() e para cada episodio -> obtenemos el titulo con e.getTituloEpisodio y lo pasamos a mayusculas
+//        //contains() busca en alguna parte del titulo lo que el usuario ingreso, igual convertido a mayusculas
+//        //findFirst() obtiene la primera coincidencia. Y retorna un optional
+//        //Optional es un contenedor donde puede o no haber un resultado. En una variable local del
+//        //tipo Optional de <Episodio>, se almacena el resultado de los filtros de stream y la tratamos con if-else
+//        System.out.println("Escribe el titulo completo que deseas buscar, o parte de él: ");
+//        var pedazoTitulo = teclado.nextLine();
+//        Optional<Episodio> episodioBuscado = episodios.stream()
+//                .filter(e -> e.getTituloEpisodio().toUpperCase().contains(pedazoTitulo.toUpperCase()))
+//                .findFirst();
+//        if(episodioBuscado.isPresent()){
+//            System.out.println("Episodio encontrado: ");
+//            System.out.println("Los datos son: " +episodioBuscado.get()); //get().getTitulo() traeria solo el titulo
+//        } else {
+//            System.out.println("Episodio no encontrado.");
+//        }
+
+        //Obtenemos las evaluaciones por temporada
+        //Trabajamos ahora con Map que recibe un Integer (temporada) y un Double (evaluacion) de la lista de episodios
+        //filter() omite los episodios que no tienen evaluacion y que anteriormente les asignamos 0 con try-catch
+        //collect(Collectors.groupingBy le pasamos el episodio y que obtenga la Temporada, entonces trae todos los
+        //datos y los agrupa, este sera el valor Integer del Map
+        //Collectors.averagingDouble le pasamos el Episodio y que obtenga la evaluacion. Este es el Double del Map
+        Map<Integer, Double> evaluacionesPorTemporada = episodios.stream()
+                .filter(e -> e.getEvaluacion() > 0.0)
+                .collect((Collectors.groupingBy(Episodio::getTemporadaDeEpisodio,
+                        Collectors.averagingDouble(Episodio::getEvaluacion))));
+        System.out.println("Evaluaciones por temporada: " +evaluacionesPorTemporada);
 
 
 
