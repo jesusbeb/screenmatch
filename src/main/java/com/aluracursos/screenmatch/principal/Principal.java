@@ -47,18 +47,23 @@ public class Principal {
 //        System.out.println("Datos por temporada: ");
 //        temporadas.forEach(System.out::println);
 
-        //Mostrar solo titulo de episodios
-        //itera la lista temporadas para traer los episodios
-        //El for anidado lo simplificamos con una expresion lambda
-        for (int i = 0; i < datosSerie.totalTemporadas(); i++) {
-            List<DatosEpisodioR> episodiosTemporada = temporadas.get(i).episodiosTemporada();
-            //iteramos la lista episodiosTemporadas para obtener los titulos
-            for (int j = 0; j < episodiosTemporada.size(); j++) {
-                System.out.println(episodiosTemporada.get(j).tituloEpisodio());
-            }
-        }
+//        //Mostrar solo titulo de episodios
+//        //itera la lista temporadas para traer los episodios
+//        for (int i = 0; i < datosSerie.totalTemporadas(); i++) {
+//            List<DatosEpisodioR> episodiosTemporada = temporadas.get(i).episodiosTemporada();
+//            //iteramos la lista episodiosTemporadas para obtener los titulos
+//            for (int j = 0; j < episodiosTemporada.size(); j++) {
+//                System.out.println(episodiosTemporada.get(j).tituloEpisodio());
+//            }
+//        }
 
-
+        //Expresion lambda para simplicidar el for anidado anterior
+        //temporadas.forEach itera la lista de temporadas
+        //(t -> t.episodiosTemporada) de la lista de temporadas traemos los episodios.
+        // t es el argumento -> t.episodios es el cuerpo de la funcion
+        //t.episodiosTemporada().forEach  hacemos tambien un forEach de la lista de episodios
+        //"e" es el argumento -> y el cuerpo de la funcion imprime el titulo
+        temporadas.forEach(t -> t.episodiosTemporada().forEach(e -> System.out.println(e.tituloEpisodio())));
 
 
 
