@@ -33,19 +33,19 @@ public class Episodio {
     }
 
     //getters & setters
-    public Integer getTemporada(){
+    public Integer getTemporadaDeEpisodio(){
         return temporadaDeEpisodio;
     }
 
-    public void setTemporada(Integer temporada){
-        this.temporadaDeEpisodio = temporada;
+    public void setTemporadaDeEpisodio(Integer temporadaDeEpisodio){
+        this.temporadaDeEpisodio = temporadaDeEpisodio;
     }
 
-    public String getTitulo(){
+    public String getTituloEpisodio(){
         return tituloEpisodio;
     }
 
-    public void setTitulo(String Titulo){
+    public void setTituloEpisodio(String tituloEpisodio){
         this.tituloEpisodio = tituloEpisodio;
     }
 
@@ -65,12 +65,12 @@ public class Episodio {
         this.evaluacionEpisodio = evaluacion;
     }
 
-    public LocalDate getFechaDeLanzamiento(){
+    public LocalDate getFechaLanzamientoEpisodio(){
         return fechaLanzamientoEpisodio;
     }
 
-    public void setFechaDeLanzamiento(LocalDate fechaDeLanzamiento){
-        this.fechaLanzamientoEpisodio = fechaDeLanzamiento;
+    public void setFechaLanzamientoEpisodio(LocalDate fechaLanzamientoEpisodio){
+        this.fechaLanzamientoEpisodio = fechaLanzamientoEpisodio;
     }
 
     //Sobreescribimos el metodo toString para mostrar los datos que queremos y no quiza la direccion fisica de esta clase
