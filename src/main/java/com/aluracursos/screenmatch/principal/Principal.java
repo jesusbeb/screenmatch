@@ -7,6 +7,7 @@ import com.aluracursos.screenmatch.service.ConsumoAPI;
 import com.aluracursos.screenmatch.service.ConvierteDatos;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -75,6 +76,21 @@ public class Principal {
                 .flatMap(t -> t.episodiosTemporada().stream())
                 .collect(Collectors.toList());
 
+        //Top 5 de episodios mejor valorados
+        //filter() e para cada episodio que sea diferente ! de e.evaluacion o sea que contenga "N/A" se ignorara
+        //sorted() compara las evaluaciones de todos los episodios y los ordena, reversed() ordena de mayor a menor
+        //limit() limita a cierto numero de elementos
+        //peek() (ojeada) nos permite ver las etapas de stream, algo asi como debugear
+        System.out.println("Top 5 de episodios");
+        datosEpisodioR.stream()
+                .filter(e -> !e.evaluacionEpisodio().equalsIgnoreCase("N/A"))
+                //.peek(e -> System.out.println("Pasando por el 1er filtro N/A: " +e))
+                .sorted(Comparator.comparing(DatosEpisodioR::evaluacionEpisodio).reversed())
+                //.peek(e -> System.out.println("Pasando por ordenacion de mayor a menor: " +e))
+                .map(e -> e.tituloEpisodio().toUpperCase())
+                //.peek(e -> System.out.println("Pasando filtro de mayusculas: " +e))
+                .limit(5)
+                .forEach(System.out::println);
 
 
     }
