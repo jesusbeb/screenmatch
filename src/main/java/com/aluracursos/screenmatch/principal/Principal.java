@@ -3,6 +3,7 @@ package com.aluracursos.screenmatch.principal;
 import com.aluracursos.screenmatch.model.DatosEpisodioR;
 import com.aluracursos.screenmatch.model.DatosSerieR;
 import com.aluracursos.screenmatch.model.DatosTemporadasR;
+import com.aluracursos.screenmatch.model.Episodio;
 import com.aluracursos.screenmatch.service.ConsumoAPI;
 import com.aluracursos.screenmatch.service.ConvierteDatos;
 
@@ -67,32 +68,44 @@ public class Principal {
 //        //"e" es el argumento -> y el cuerpo de la funcion imprime el titulo
 //        temporadas.forEach(t -> t.episodiosTemporada().forEach(e -> System.out.println(e.tituloEpisodio())));
 
-        //Creamos una lista de tipo DatosEpisodioR
-        //Creamos lista del tipo DatosEpisodio que sera igual al ArrayList temporadas.stream
-        //flatMap contiene una temporada t y lo convertira en una lista de episodios t.episodios y
-        //a esa lista de episodios se le aplica tambien stream y finalmente se convierte todo en una lista con
-        //collect(Collectors.toList()) que crea una lista mutable
-        List<DatosEpisodioR> datosEpisodioR = temporadas.stream()
-                .flatMap(t -> t.episodiosTemporada().stream())
+//        //Creamos una lista de tipo DatosEpisodioR
+//        //Creamos lista del tipo DatosEpisodio que sera igual al ArrayList temporadas.stream
+//        //flatMap contiene una temporada t y lo convertira en una lista de episodios t.episodios y
+//        //a esa lista de episodios se le aplica tambien stream y finalmente se convierte todo en una lista con
+//        //collect(Collectors.toList()) que crea una lista mutable
+//        List<DatosEpisodioR> datosEpisodioR = temporadas.stream()
+//                .flatMap(t -> t.episodiosTemporada().stream())
+//                .collect(Collectors.toList());
+
+//        //Top 5 de episodios mejor valorados
+//        //filter() e para cada episodio que sea diferente ! de e.evaluacion o sea que contenga "N/A" se ignorara
+//        //sorted() compara las evaluaciones de todos los episodios y los ordena, reversed() ordena de mayor a menor
+//        //limit() limita a cierto numero de elementos
+//        //peek() (ojeada) nos permite ver las etapas de stream, algo asi como debugear
+//        System.out.println("Top 5 de episodios");
+//        datosEpisodioR.stream()
+//                .filter(e -> !e.evaluacionEpisodio().equalsIgnoreCase("N/A"))
+//                //.peek(e -> System.out.println("Pasando por el 1er filtro N/A: " +e))
+//                .sorted(Comparator.comparing(DatosEpisodioR::evaluacionEpisodio).reversed())
+//                //.peek(e -> System.out.println("Pasando por ordenacion de mayor a menor: " +e))
+//                .map(e -> e.tituloEpisodio().toUpperCase())
+//                //.peek(e -> System.out.println("Pasando filtro de mayusculas: " +e))
+//                .limit(5)
+//                .forEach(System.out::println);
+
+        //Creamos una nueva lista de tipo episodios a partir de la lista de temporadas. Usamos la clase Episodio,
+        //Creamos lista de episodios del tipo de clase Episodio que sera igual a la lista temporadas.stream
+        //flatMap() cada elemento t de la temporada se convierte a una lista de episodios, a su vez le aplicamos stream
+        //.map transforma cada dato del tipo Episodio en un nuevo Episodio que tendra el numero de temporada t.numero y
+        //se pasan todos los datos de ese episodio representados por d. t.numero y d se pasan al constructor de Episodio
+        //collect... crea una lista mutable
+        List<Episodio> episodios = temporadas.stream()
+                .flatMap(t -> t.episodiosTemporada().stream()
+                        .map(d -> new Episodio(t.numeroTemporada(),d)))
                 .collect(Collectors.toList());
+//        System.out.println("Todas las temporadas con sus episodios: ");
+//        episodios.forEach(System.out::println);
 
-        //Top 5 de episodios mejor valorados
-        //filter() e para cada episodio que sea diferente ! de e.evaluacion o sea que contenga "N/A" se ignorara
-        //sorted() compara las evaluaciones de todos los episodios y los ordena, reversed() ordena de mayor a menor
-        //limit() limita a cierto numero de elementos
-        //peek() (ojeada) nos permite ver las etapas de stream, algo asi como debugear
-        System.out.println("Top 5 de episodios");
-        datosEpisodioR.stream()
-                .filter(e -> !e.evaluacionEpisodio().equalsIgnoreCase("N/A"))
-                //.peek(e -> System.out.println("Pasando por el 1er filtro N/A: " +e))
-                .sorted(Comparator.comparing(DatosEpisodioR::evaluacionEpisodio).reversed())
-                //.peek(e -> System.out.println("Pasando por ordenacion de mayor a menor: " +e))
-                .map(e -> e.tituloEpisodio().toUpperCase())
-                //.peek(e -> System.out.println("Pasando filtro de mayusculas: " +e))
-                .limit(5)
-                .forEach(System.out::println);
-
-        
 
 
 
