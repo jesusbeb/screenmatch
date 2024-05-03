@@ -9,10 +9,7 @@ import com.aluracursos.screenmatch.service.ConvierteDatos;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Principal {
@@ -108,28 +105,46 @@ public class Principal {
 //        System.out.println("Todas las temporadas con sus episodios: ");
 //        episodios.forEach(System.out::println);
 
-        //Busqueda de episodios a partir de x año
-        System.out.println("Indica el año a partir del cual deseas ver los episodios: ");
-        var fecha = teclado.nextInt(); //var se adapta al tipo de valor que se almacene en la variable
-        teclado.nextLine(); //se usa para cuando hay errores al no leer correctamente lo ingresado
-        //Instanciamos una variable llamada fechaBusqueda de tipo LocalDate. Le inicializamos el mes y el dia, el año lo ingresara el usuario
-        //Instanciamos una variable de tipo DateTimeFormatter llamada dtf y usamos ofPattern para
-        //indicar en que formato queremos imprimir la fecha
-        //A la lista episodios le aplicamos stream() con sus operaciones intermediarias
-        //filter() para cada episodio e-> obtenemos la fecha de lanzamiento. Como tenemos fechas de lanzamiento que
-        //son null, indicamos que esas no se consideren. Tambien usamos el metodo de la api de fechas isAfter() para
-        //indicar que solo considere a las que son despues del año que ingresa el usuario
-        //finalmente imprimimos pero usamos unos elementos diferentes para imprimir de forma diferente
-        LocalDate fechaBusqueda = LocalDate.of(fecha, 1,1);
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        episodios.stream()
-                .filter(e -> e.getFechaLanzamientoEpisodio() != null && e.getFechaLanzamientoEpisodio().isAfter(fechaBusqueda))
-                .forEach(e -> System.out.println(
-                        "Temporada " +e.getTemporadaDeEpisodio() +
-                                "Episodio " +e.getTituloEpisodio() +
-                                "Fecha de Lanzamiento " +e.getFechaLanzamientoEpisodio().format(dtf) //usamos .format para indicar el formato en que queremos la fecha
-                ));
+//        //Busqueda de episodios a partir de x año
+//        System.out.println("Indica el año a partir del cual deseas ver los episodios: ");
+//        var fecha = teclado.nextInt(); //var se adapta al tipo de valor que se almacene en la variable
+//        teclado.nextLine(); //se usa para cuando hay errores al no leer correctamente lo ingresado
+//        //Instanciamos una variable llamada fechaBusqueda de tipo LocalDate. Le inicializamos el mes y el dia, el año lo ingresara el usuario
+//        //Instanciamos una variable de tipo DateTimeFormatter llamada dtf y usamos ofPattern para
+//        //indicar en que formato queremos imprimir la fecha
+//        //A la lista episodios le aplicamos stream() con sus operaciones intermediarias
+//        //filter() para cada episodio e-> obtenemos la fecha de lanzamiento. Como tenemos fechas de lanzamiento que
+//        //son null, indicamos que esas no se consideren. Tambien usamos el metodo de la api de fechas isAfter() para
+//        //indicar que solo considere a las que son despues del año que ingresa el usuario
+//        //finalmente imprimimos pero usamos unos elementos diferentes para imprimir de forma diferente
+//        LocalDate fechaBusqueda = LocalDate.of(fecha, 1,1);
+//        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//        episodios.stream()
+//                .filter(e -> e.getFechaLanzamientoEpisodio() != null && e.getFechaLanzamientoEpisodio().isAfter(fechaBusqueda))
+//                .forEach(e -> System.out.println(
+//                        "Temporada " +e.getTemporadaDeEpisodio() +
+//                                "Episodio " +e.getTituloEpisodio() +
+//                                "Fecha de Lanzamiento " +e.getFechaLanzamientoEpisodio().format(dtf) //usamos .format para indicar el formato en que queremos la fecha
+//                ));
 
+        //Buscar episodios por pedazo de titulo
+        //La lista de episodios la tratamos con stream()
+        //filter() e para cada episodio -> obtenemos el titulo con e.getTituloEpisodio y lo pasamos a mayusculas
+        //contains() busca en alguna parte del titulo lo que el usuario ingreso, igual convertido a mayusculas
+        //findFirst() obtiene la primera coincidencia. Y retorna un optional
+        //Optional es un contenedor donde puede o no haber un resultado. En una variable local del
+        //tipo Optional de <Episodio>, se almacena el resultado de los filtros de stream y la tratamos con if-else
+        System.out.println("Escribe el titulo completo que deseas buscar, o parte de él: ");
+        var pedazoTitulo = teclado.nextLine();
+        Optional<Episodio> episodioBuscado = episodios.stream()
+                .filter(e -> e.getTituloEpisodio().toUpperCase().contains(pedazoTitulo.toUpperCase()))
+                .findFirst();
+        if(episodioBuscado.isPresent()){
+            System.out.println("Episodio encontrado: ");
+            System.out.println("Los datos son: " +episodioBuscado.get()); //get().getTitulo() traeria solo el titulo
+        } else {
+            System.out.println("Episodio no encontrado.");
+        }
 
 
 
