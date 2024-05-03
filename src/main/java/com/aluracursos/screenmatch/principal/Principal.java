@@ -9,6 +9,7 @@ import com.aluracursos.screenmatch.service.ConvierteDatos;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Principal {
     //variables
@@ -57,14 +58,22 @@ public class Principal {
 //            }
 //        }
 
-        //Expresion lambda para simplicidar el for anidado anterior
-        //temporadas.forEach itera la lista de temporadas
-        //(t -> t.episodiosTemporada) de la lista de temporadas traemos los episodios.
-        // t es el argumento -> t.episodios es el cuerpo de la funcion
-        //t.episodiosTemporada().forEach  hacemos tambien un forEach de la lista de episodios
-        //"e" es el argumento -> y el cuerpo de la funcion imprime el titulo
-        temporadas.forEach(t -> t.episodiosTemporada().forEach(e -> System.out.println(e.tituloEpisodio())));
+//        //Expresion lambda para simplificar el for anidado anterior
+//        //temporadas.forEach itera la lista de temporadas
+//        //(t -> t.episodiosTemporada) de la lista de temporadas traemos los episodios.
+//        // t es el argumento -> t.episodios es el cuerpo de la funcion
+//        //t.episodiosTemporada().forEach  hacemos tambien un forEach de la lista de episodios
+//        //"e" es el argumento -> y el cuerpo de la funcion imprime el titulo
+//        temporadas.forEach(t -> t.episodiosTemporada().forEach(e -> System.out.println(e.tituloEpisodio())));
 
+        //Creamos una lista de tipo DatosEpisodioR
+        //Creamos lista del tipo DatosEpisodio que sera igual al ArrayList temporadas.stream
+        //flatMap contiene una temporada t y lo convertira en una lista de episodios t.episodios y
+        //a esa lista de episodios se le aplica tambien stream y finalmente se convierte todo en una lista con
+        //collect(Collectors.toList()) que crea una lista mutable
+        List<DatosEpisodioR> datosEpisodioR = temporadas.stream()
+                .flatMap(t -> t.episodiosTemporada().stream())
+                .collect(Collectors.toList());
 
 
 
