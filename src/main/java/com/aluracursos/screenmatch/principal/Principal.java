@@ -158,6 +158,16 @@ public class Principal {
                         Collectors.averagingDouble(Episodio::getEvaluacion))));
         System.out.println("Evaluaciones por temporada: " +evaluacionesPorTemporada);
 
+        //DoubleSummaryStatistics es una clase que genera estadisticas de forma preestablecida
+        //Instanciamos una variable de esa clase y la llamamos "est", nombre comun en el mercado
+        //collect colecta los datos y summarizingDouble obtendra las evaluaciones de los datos de los Episodios
+        DoubleSummaryStatistics est = episodios.stream()
+                .filter(e -> e.getEvaluacion() > 0.0)
+                .collect(Collectors.summarizingDouble(Episodio::getEvaluacion));
+        System.out.println("Todas las evaluaciones: " +est);
+        System.out.println("Media de las evaluaciones: " +est.getAverage());
+        System.out.println("Episodio mejor evaluado: " +est.getMax());
+        System.out.println("Episodio peor evaluado: " +est.getMin());
 
 
 
