@@ -3,7 +3,8 @@ package com.aluracursos.screenmatch.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-//Implementamos de la interfaz que creamos
+//Clase que contiene el metodo para convertir el json a una clase e implementamos
+//de la interfaz que creamos
 public class ConvierteDatos implements IConvierteDatos{
     //Creamos una instancia de ObjectMapper que nos servira para mapear los valores que vienen de la API
     private ObjectMapper objectMapper = new ObjectMapper();

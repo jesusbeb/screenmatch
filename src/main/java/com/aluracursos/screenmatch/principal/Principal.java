@@ -34,7 +34,7 @@ public class Principal {
         var json = consumoApi.obtenerDatosApi(URL_BASE + buscarSerie.replace(" ", "+") + API_KEY);
 //        System.out.println("json de la respuesta: " +json);
         DatosSerieR datosSerie = conversor.obtenerDatos(json, DatosSerieR.class);
-//        System.out.println("Datos de la serie" +datosSerie); //Imprime titulo, total de temporadas y evaluacion
+        System.out.println("Datos de la serie" +datosSerie); //Imprime titulo, total de temporadas y evaluacion
 
         //Obtenemos los datos de cada temporada y se almacenan en un ArrayList
         //La url la modificamos para iterar en ella segun el numero de temporada

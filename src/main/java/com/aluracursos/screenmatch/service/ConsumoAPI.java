@@ -6,7 +6,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-//Clase que contiene el metodo para consultar a la Api
+//Clase que contiene el metodo para consultar a la Api y traer el json
 public class ConsumoAPI {
 
     //Metodo para consultar a la API
