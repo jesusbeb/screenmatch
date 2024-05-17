@@ -1,14 +1,11 @@
 package com.aluracursos.screenmatch.principal;
 
-import com.aluracursos.screenmatch.model.DatosEpisodioR;
-import com.aluracursos.screenmatch.model.DatosSerieR;
-import com.aluracursos.screenmatch.model.DatosTemporadasR;
+import com.aluracursos.screenmatch.model.DatosSerie;
+import com.aluracursos.screenmatch.model.DatosTemporadas;
 import com.aluracursos.screenmatch.model.Episodio;
 import com.aluracursos.screenmatch.service.ConsumoAPI;
 import com.aluracursos.screenmatch.service.ConvierteDatos;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,21 +26,21 @@ public class Principal {
         //Buscar datos de alguna serie
         //replace reemplazara espacios tecleados por el usuario por signos+
         //se envia la URL al metodo obtenerDatosApi del objeto consumoApi, el resultado se almacena en json
-        //Instanciamos la clase DatosSerieR y le almacenamos lo que el metodo obtenerDatos nos trae al enviarle
+        //Instanciamos la clase DatosSerie y le almacenamos lo que el metodo obtenerDatos nos trae al enviarle
         //la variable json y el nombre de la clase a la que se convertira
         var json = consumoApi.obtenerDatosApi(URL_BASE + buscarSerie.replace(" ", "+") + API_KEY);
 //        System.out.println("json de la respuesta: " +json);
-        DatosSerieR datosSerie = conversor.obtenerDatos(json, DatosSerieR.class);
+        DatosSerie datosSerie = conversor.obtenerDatos(json, DatosSerie.class);
         System.out.println("Datos de la serie" +datosSerie); //Imprime titulo, total de temporadas y evaluacion
 
         //Obtenemos los datos de cada temporada y se almacenan en un ArrayList
         //La url la modificamos para iterar en ella segun el numero de temporada
         //Obtenemos los datos de la temporada y se almacenan en datosTemporadas
         //Imprimimos el ArrayList temporadas con un forEach
-        List<DatosTemporadasR> temporadas = new ArrayList<>();
+        List<DatosTemporadas> temporadas = new ArrayList<>();
         for (int i = 1; i <= datosSerie.totalTemporadas() ; i++) {
             json = consumoApi.obtenerDatosApi(URL_BASE + buscarSerie.replace(" ", "+" ) + "&Season=" +i +API_KEY);
-            DatosTemporadasR datosTemporadas = conversor.obtenerDatos(json, DatosTemporadasR.class);
+            DatosTemporadas datosTemporadas = conversor.obtenerDatos(json, DatosTemporadas.class);
             temporadas.add(datosTemporadas);
         }
 //        System.out.println("Datos por temporada: ");
@@ -52,7 +49,7 @@ public class Principal {
 //        //Mostrar solo titulo de episodios
 //        //itera la lista temporadas para traer los episodios
 //        for (int i = 0; i < datosSerie.totalTemporadas(); i++) {
-//            List<DatosEpisodioR> episodiosTemporada = temporadas.get(i).episodiosTemporada();
+//            List<DatosEpisodio> episodiosTemporada = temporadas.get(i).episodiosTemporada();
 //            //iteramos la lista episodiosTemporadas para obtener los titulos
 //            for (int j = 0; j < episodiosTemporada.size(); j++) {
 //                System.out.println(episodiosTemporada.get(j).tituloEpisodio());
@@ -67,12 +64,12 @@ public class Principal {
 //        //"e" es el argumento -> y el cuerpo de la funcion imprime el titulo
 //        temporadas.forEach(t -> t.episodiosTemporada().forEach(e -> System.out.println(e.tituloEpisodio())));
 
-//        //Creamos una lista de tipo DatosEpisodioR
+//        //Creamos una lista de tipo DatosEpisodio
 //        //Creamos lista del tipo DatosEpisodio que sera igual al ArrayList temporadas.stream
 //        //flatMap contiene una temporada t y lo convertira en una lista de episodios t.episodios y
 //        //a esa lista de episodios se le aplica tambien stream y finalmente se convierte todo en una lista con
 //        //collect(Collectors.toList()) que crea una lista mutable
-//        List<DatosEpisodioR> datosEpisodioR = temporadas.stream()
+//        List<DatosEpisodio> datosEpisodio = temporadas.stream()
 //                .flatMap(t -> t.episodiosTemporada().stream())
 //                .collect(Collectors.toList());
 
@@ -82,22 +79,22 @@ public class Principal {
 //        //limit() limita a cierto numero de elementos
 //        //peek() (ojeada) nos permite ver las etapas de stream, algo asi como debugear
 //        System.out.println("Top 5 de episodios");
-//        datosEpisodioR.stream()
+//        datosEpisodio.stream()
 //                .filter(e -> !e.evaluacionEpisodio().equalsIgnoreCase("N/A"))
 //                //.peek(e -> System.out.println("Pasando por el 1er filtro N/A: " +e))
-//                .sorted(Comparator.comparing(DatosEpisodioR::evaluacionEpisodio).reversed())
+//                .sorted(Comparator.comparing(DatosEpisodio::evaluacionEpisodio).reversed())
 //                //.peek(e -> System.out.println("Pasando por ordenacion de mayor a menor: " +e))
 //                .map(e -> e.tituloEpisodio().toUpperCase())
 //                //.peek(e -> System.out.println("Pasando filtro de mayusculas: " +e))
 //                .limit(5)
 //                .forEach(System.out::println);
 
-        //Creamos una nueva lista de tipo episodios a partir de la lista de temporadas. Usamos la clase Episodio,
+        //Creamos una nueva lista de tipo episodios a partir de la lista de temporadas.
         //Creamos lista de episodios del tipo de clase Episodio que sera igual a la lista temporadas.stream
         //flatMap() cada elemento t de la temporada se convierte a una lista de episodios, a su vez le aplicamos stream
-        //.map transforma cada dato del tipo Episodio en un nuevo Episodio que tendra el numero de temporada t.numero y
-        //se pasan todos los datos de ese episodio representados por d. t.numero y d se pasan al constructor de Episodio
-        //collect... crea una lista mutable
+        //.map transforma cada elemento de la lista episodiosTemporada en un nuevo Episodio, pasandole al constructor de
+        //Episodio el numero de temporada (t.numeroTemporada) y todos los demas datos de ese episodio representados por d.
+        //Collect... crea una lista mutable
         List<Episodio> episodios = temporadas.stream()
                 .flatMap(t -> t.episodiosTemporada().stream()
                         .map(d -> new Episodio(t.numeroTemporada(),d)))
@@ -147,8 +144,8 @@ public class Principal {
 //        }
 
         //Obtenemos las evaluaciones por temporada
-        //Trabajamos ahora con Map que recibe un Integer (temporada) y un Double (evaluacion) de la lista de episodios
-        //filter() omite los episodios que no tienen evaluacion y que anteriormente les asignamos 0 con try-catch
+        //Trabajamos ahora con Map que recibe un Integer (temporada) y un Double (evaluacion) de la lista de episodios al tratarla con stream
+        //filter() omite los episodios que no tienen evaluacion y se les asigno 0 en la clase Episodio
         //collect(Collectors.groupingBy le pasamos el episodio y que obtenga la Temporada, entonces trae todos los
         //datos y los agrupa, este sera el valor Integer del Map
         //Collectors.averagingDouble le pasamos el Episodio y que obtenga la evaluacion. Este es el Double del Map

@@ -12,19 +12,20 @@ public class Episodio {
     private Double evaluacionEpisodio;
     private LocalDate fechaLanzamientoEpisodio;
 
-    //constructor
-    public Episodio(Integer numero, DatosEpisodioR d){
-        this.temporadaDeEpisodio = numero; //viene de Integer numero
+    //constructor. Recibe un objeto de tipo Integer y un objeto de tipo DatosEpisodio
+    public Episodio(Integer temporadaDeEpisodio, DatosEpisodio d){
+        this.temporadaDeEpisodio = temporadaDeEpisodio;
         this.tituloEpisodio = d.tituloEpisodio(); //viene de los datos que vienen en d, obtenemos el titulo
         this.numeroEpisodio = d.numeroEpisodio();
+        //d.evaluacionEpisodio viene de la clase Record como un String y dentro de
+        //esta clase Episodio esta como Double por lo que hacemos un parseo
         try{ //Usamos try cuando la evaluacion no se pueda parsear a Double por traer "N/A"
-            //d.evaluacionEpisodio viene de la clase Record como un String y dentro de
-            //esta clase Episodio esta como Double por lo que hacemos un parseo
             this.evaluacionEpisodio = Double.valueOf(d.evaluacionEpisodio());
         }catch(NumberFormatException e){
             this.evaluacionEpisodio = 0.0; //
         }
-        try{ //cuando la fecha de lanzamiento no se pueda parsear a LocalDate por traer "N/A"
+        //d.fechaLanzamientoEpisodio viene como String, parseamos a LocalDate
+        try{ //cuando la fecha de lanzamiento no se pueda parsear por traer "N/A"
             this.fechaLanzamientoEpisodio = LocalDate.parse(d.fechaLanzamientoEpisodio());
         } catch (DateTimeParseException e){
             this.fechaLanzamientoEpisodio = null;

@@ -10,8 +10,8 @@ public class ConvierteDatos implements IConvierteDatos{
     private ObjectMapper objectMapper = new ObjectMapper();
 
     //metodo obtenerDatos que tenemos que implementar de la Interfaz y que retorna algo generico
-    //retorna un objeto del tipo objectMapper, readValue lee el valor del json y
-    //lo transforma en la clase que pasemos
+    //retorna un objeto del tipo objectMapper, readValue lee el valor del json convertido en
+    //string y lo transforma en la clase que pasemos
     //readValue puede generar una excepcion, por lo que hay que tratarla
     @Override
     public <T> T obtenerDatos(String json, Class<T> clase) {
